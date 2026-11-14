@@ -1,0 +1,42 @@
+# Optional self-hosted PokéVault stack: app (UI + sync API) and PostgreSQL.
+#
+#   cp .env.example .env    # set POSTGRES_PASSWORD
+#   docker compose up -d --build
+#
+# Put a TLS-terminating reverse proxy (e.g. Nginx Proxy Manager, Caddy, Traefik)
+# in front of port 3000 – camera access and PWA install require HTTPS.
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
+    image: pokevault:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://pokevault:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/pokevault?schema=public
+      PV_CORS_ORIGINS: ${PV_CORS_ORIGINS:-*}
+    ports:
+      - "${PV_PORT:-3000}:3000"
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pokevault
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: pokevault
+    volumes:
+      - pokevault-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pokevault -d pokevault"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  pokevault-db:

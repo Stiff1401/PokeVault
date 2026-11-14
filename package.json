@@ -1,0 +1,41 @@
+{
+  "name": "pokevault",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local-first PWA for scanning, cataloging, trading, gifting and valuing Pokémon TCG collections.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:selfhost": "cross-env BUILD_TARGET=selfhost next build",
+    "start:selfhost": "node .next/standalone/server.js",
+    "typecheck": "tsc --noEmit",
+    "icons": "node scripts/generate-icons.mjs",
+    "postinstall": "prisma generate",
+    "build:index": "node scripts/build-image-index.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "dexie": "^4.0.10",
+    "dexie-react-hooks": "^1.1.7",
+    "jsqr": "^1.4.0",
+    "next": "^15.1.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sharp": "^0.33.5",
+    "tesseract.js": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.4.49",
+    "prisma": "^6.1.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "PokéVault",
+  "short_name": "PokéVault",
+  "description": "Scan, catalog, trade, gift and value your Pokémon TCG collection – local-first.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0c12",
+  "theme_color": "#0a0c12",
+  "lang": "de",
+  "categories": ["utilities", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Karte scannen", "url": "scan/", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tauschmappe", "url": "trade/", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,0 +1,61 @@
+// Optional self-hosted PostgreSQL schema. It mirrors the synced part of the
+// browser's IndexedDB (collection + targetSets). The `cards` and `priceHistory`
+// tables are device-local caches that every client rebuilds from TCGdex, so
+// they are intentionally not stored on the server.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vault {
+  id              String           @id
+  name            String
+  editorTokenHash String
+  viewerTokenHash String
+  createdAt       DateTime         @default(now())
+  items           CollectionItem[]
+  targetSets      TargetSet[]
+}
+
+model CollectionItem {
+  vaultId          String
+  id               String
+  cardId           String
+  variant          String
+  condition        String
+  vaultQuantity    Int      @default(1)
+  tradeQuantity    Int      @default(0)
+  reservedAsGiftBy String?
+  acquiredAt       String
+  // ISO-8601 client timestamp used for last-write-wins conflict resolution.
+  updatedAt        String
+  deleted          Boolean  @default(false)
+  // Server receive time, used as the pull cursor.
+  syncedAt         DateTime @default(now())
+  vault            Vault    @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  @@id([vaultId, id])
+  @@index([vaultId, syncedAt])
+  @@index([vaultId, cardId])
+}
+
+model TargetSet {
+  vaultId     String
+  setId       String
+  setName     String
+  releaseDate String
+  totalCards  Int
+  addedAt     String
+  updatedAt   String
+  deleted     Boolean  @default(false)
+  syncedAt    DateTime @default(now())
+  vault       Vault    @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  @@id([vaultId, setId])
+  @@index([vaultId, syncedAt])
+}

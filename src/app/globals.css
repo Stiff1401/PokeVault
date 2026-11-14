@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-slate-100 antialiased;
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-white/[0.06] bg-ink-900;
+  }
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-volt-400 text-ink-950 hover:bg-volt-300;
+  }
+  .btn-ghost {
+    @apply btn border border-white/10 bg-white/[0.04] text-slate-100 hover:bg-white/[0.08];
+  }
+  .btn-danger {
+    @apply btn border border-ember-500/40 bg-ember-500/10 text-ember-400 hover:bg-ember-500/20;
+  }
+  .field {
+    @apply min-h-[44px] w-full rounded-xl border border-white/10 bg-ink-800 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-volt-400 focus:outline-none;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400;
+  }
+  .chip {
+    @apply inline-flex min-h-[34px] shrink-0 items-center rounded-full border border-white/10 bg-white/[0.04] px-3 text-xs font-medium text-slate-300 transition;
+  }
+  .chip-on {
+    @apply border-volt-400 bg-volt-400/15 text-volt-300;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+@keyframes pv-pop {
+  0% {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-pop {
+  animation: pv-pop 0.18s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not(.stage-mode) *,
+  body:not(.stage-mode) *::before,
+  body:not(.stage-mode) *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
